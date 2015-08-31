@@ -14,6 +14,9 @@
 		6B9B7A831B94DF3B001270E0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B9B7A821B94DF3B001270E0 /* Images.xcassets */; };
 		6B9B7A861B94DF3B001270E0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B9B7A841B94DF3B001270E0 /* LaunchScreen.xib */; };
 		6B9B7A921B94DF3B001270E0 /* Music_SearchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9B7A911B94DF3B001270E0 /* Music_SearchTests.m */; };
+		6B9B7A9D1B94E501001270E0 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9B7A9C1B94E501001270E0 /* SearchTableViewCell.m */; };
+		6B9B7AA01B94E535001270E0 /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9B7A9F1B94E535001270E0 /* SearchTableViewController.m */; };
+		6B9B7AA31B94E641001270E0 /* MusicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9B7AA21B94E641001270E0 /* MusicViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +43,12 @@
 		6B9B7A8B1B94DF3B001270E0 /* Music SearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Music SearchTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B9B7A901B94DF3B001270E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B9B7A911B94DF3B001270E0 /* Music_SearchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Music_SearchTests.m; sourceTree = "<group>"; };
+		6B9B7A9B1B94E501001270E0 /* SearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewCell.h; sourceTree = "<group>"; };
+		6B9B7A9C1B94E501001270E0 /* SearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewCell.m; sourceTree = "<group>"; };
+		6B9B7A9E1B94E535001270E0 /* SearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewController.h; sourceTree = "<group>"; };
+		6B9B7A9F1B94E535001270E0 /* SearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewController.m; sourceTree = "<group>"; };
+		6B9B7AA11B94E641001270E0 /* MusicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicViewController.h; sourceTree = "<group>"; };
+		6B9B7AA21B94E641001270E0 /* MusicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +95,12 @@
 				6B9B7A7C1B94DF3B001270E0 /* ViewController.h */,
 				6B9B7A7D1B94DF3B001270E0 /* ViewController.m */,
 				6B9B7A7F1B94DF3B001270E0 /* Main.storyboard */,
+				6B9B7A9E1B94E535001270E0 /* SearchTableViewController.h */,
+				6B9B7A9F1B94E535001270E0 /* SearchTableViewController.m */,
+				6B9B7A9B1B94E501001270E0 /* SearchTableViewCell.h */,
+				6B9B7A9C1B94E501001270E0 /* SearchTableViewCell.m */,
+				6B9B7AA11B94E641001270E0 /* MusicViewController.h */,
+				6B9B7AA21B94E641001270E0 /* MusicViewController.m */,
 				6B9B7A821B94DF3B001270E0 /* Images.xcassets */,
 				6B9B7A841B94DF3B001270E0 /* LaunchScreen.xib */,
 				6B9B7A751B94DF3B001270E0 /* Supporting Files */,
@@ -219,8 +234,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B9B7AA31B94E641001270E0 /* MusicViewController.m in Sources */,
 				6B9B7A7E1B94DF3B001270E0 /* ViewController.m in Sources */,
+				6B9B7A9D1B94E501001270E0 /* SearchTableViewCell.m in Sources */,
 				6B9B7A7B1B94DF3B001270E0 /* AppDelegate.m in Sources */,
+				6B9B7AA01B94E535001270E0 /* SearchTableViewController.m in Sources */,
 				6B9B7A781B94DF3B001270E0 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

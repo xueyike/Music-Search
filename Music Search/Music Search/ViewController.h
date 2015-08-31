@@ -10,6 +10,9 @@
 
 @interface ViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UITextField *keywordInput;
 
+- (IBAction)tapSearchBtn:(id)sender;
+- (IBAction)didEndOnExit:(id)sender;
 @end
 

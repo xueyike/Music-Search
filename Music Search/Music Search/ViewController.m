@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "SearchTableViewController.h"
 
 @interface ViewController ()
 
@@ -24,4 +25,20 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)tapSearchBtn:(id)sender {
+    //If needed, more actions could be done in this method after the prepareForSegue method
+}
+
+- (IBAction)didEndOnExit:(id)sender {
+    [self resignFirstResponder];
+}
+
+#pragma mark - Segues
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"showSearchResult"]) {
+        SearchTableViewController *controller = (SearchTableViewController *)[segue destinationViewController];
+        [controller setKeyword:self.keywordInput.text];
+    }
+}
 @end
