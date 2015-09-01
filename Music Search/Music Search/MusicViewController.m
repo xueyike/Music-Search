@@ -43,6 +43,7 @@
 - (void)viewDidDisappear:(BOOL)animated{
     self.lyricsUrl = nil;
 }
+
 - (NSString *)paramProcess:(NSString *)originParam{
     NSString *newParam = [originParam stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     return newParam;
