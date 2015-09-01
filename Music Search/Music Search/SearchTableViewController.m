@@ -15,6 +15,7 @@
 @property (nonatomic) NSArray *musicData;
 @property (nonatomic) NSNumber *musicCount;
 @property (nonatomic) NSURLSession *apiSession;
+@property (nonatomic) NSString *message;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *reloadButton;
 
 @end
@@ -26,11 +27,13 @@ static NSString *apiUrlString = @"https://itunes.apple.com/search?term=%@";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = self.keyword;
+    self.message = @"Loading...";
     //Create an api session to download to music list from itunes api according to the keyword
+    //Use NSURLSession and set its delegateQueue as mainQueue, then the downloading process could be done in the background, when download finished, update the UI
     NSURLSessionConfiguration *apiSessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
     [apiSessionConfig setHTTPAdditionalHeaders:@{@"Accept": @"application/json"}];
-    apiSessionConfig.timeoutIntervalForRequest = 30.0;
-    apiSessionConfig.timeoutIntervalForResource = 60.0;
+    apiSessionConfig.timeoutIntervalForRequest = 20.0;
+    apiSessionConfig.timeoutIntervalForResource = 40.0;
     self.apiSession = [NSURLSession sessionWithConfiguration:apiSessionConfig
                                                     delegate:nil
                                                delegateQueue:[NSOperationQueue mainQueue]];
@@ -50,6 +53,7 @@ static NSString *apiUrlString = @"https://itunes.apple.com/search?term=%@";
     spinner.hidesWhenStopped = YES;
     
     //Get the music list with url+keyword
+    //Take care of the error(exeption) cases with self.message
     [[self.apiSession dataTaskWithURL:[NSURL URLWithString:[NSString stringWithFormat:apiUrlString,self.keyword]]
                     completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                         if (!error) {
@@ -64,14 +68,26 @@ static NSString *apiUrlString = @"https://itunes.apple.com/search?term=%@";
                                     
                                     self.musicCount = jsonData[@"resultCount"];
                                     //Following is a printout for test, comment it after test
-                                    NSLog(@"%@ data fetched:\n%@", self.musicCount,jsonData);
+//                                    NSLog(@"%@ data fetched:\n%@", self.musicCount,jsonData);
                                     self.musicData = jsonData[@"results"];
-                                    [self.tableView reloadData];
+                                    if([self.musicData count] < 1){
+                                        self.message = @"Found no result!";
+                                    }
+                                }else{
+                                    self.message = @"Json Error!";
+                                    NSLog(@"JsonError%@",jsonError);
                                 }
+                            }else{
+                                self.message = @"Respond Error!";
                             }
+                        }else{
+                            self.message = @"Network Error!";
+                            NSLog(@"Error:%@",error);
                         }
                         self.navigationItem.rightBarButtonItem = self.reloadButton;
+                        [self.tableView reloadData];
                     }] resume];
+    
 }
 
 
@@ -100,7 +116,8 @@ static NSString *apiUrlString = @"https://itunes.apple.com/search?term=%@";
     if(self.musicCount.intValue < 1){
         //For the case no result found
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-        cell.textLabel.text = @"No result found!";
+        
+        cell.textLabel.text = self.message;
         return cell;
     }else{
         //Given more time I would prefer to do the lazy loading(show a few results first and when you drag down to view more, then load more), which could save the memory and cpu very much
@@ -127,56 +144,24 @@ static NSString *apiUrlString = @"https://itunes.apple.com/search?term=%@";
 }
 
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 
 #pragma mark - Navigation
  
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
  if ([[segue identifier] isEqualToString:@"showMusic"]) {
      NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-     NSDictionary *specificMusic = self.musicData[indexPath.section];
 
      MusicViewController *controller = (MusicViewController *)[segue destinationViewController];
 
-     [controller setMusicName:[specificMusic objectForKey:@"trackName"]];
-     [controller setArtistName:[specificMusic objectForKey:@"artistName"]];
-     [controller setAlbumName:[specificMusic objectForKey:@"collectionName"]];
-     //To avoid redownloading the image, send the UIImage data to next page
+     //To avoid redownloading the image and other data, send the data to next page
      UIImageView *imageView = (UIImageView *)[[self.tableView cellForRowAtIndexPath:indexPath] viewWithTag:1];
      UIImage *albumImage = imageView.image;
+     UILabel *label1 = (UILabel *)[[self.tableView cellForRowAtIndexPath:indexPath] viewWithTag:2];
+     UILabel *label2 = (UILabel *)[[self.tableView cellForRowAtIndexPath:indexPath] viewWithTag:3];
+     UILabel *label3 = (UILabel *)[[self.tableView cellForRowAtIndexPath:indexPath] viewWithTag:4];
+     [controller setMusicName:label1.text];
+     [controller setArtistName:label2.text];
+     [controller setAlbumName:label3.text];
      [controller setAlbumImage:albumImage];
  }
  }
