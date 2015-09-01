@@ -45,7 +45,9 @@
 }
 
 - (NSString *)paramProcess:(NSString *)originParam{
-    NSString *newParam = [originParam stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    //When we using the keyword as a param in the url, pay attention to change all spaces to "+".
+    //There are many special symbols need to be changed in url address. Given more time, I could improve all of them but here I just change some common symbols like " + ", " \" ", " \' ", " / "
+    NSString *newParam = [[[[[originParam stringByReplacingOccurrencesOfString:@" " withString:@"+"] stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"] stringByReplacingOccurrencesOfString:@"\"" withString:@"%22"] stringByReplacingOccurrencesOfString:@"\'" withString:@"%27"] stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
     return newParam;
 }
 

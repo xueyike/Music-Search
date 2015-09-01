@@ -45,6 +45,13 @@ static NSString *apiUrlString = @"https://itunes.apple.com/search?term=%@";
     // Dispose of any resources that can be recreated.
 }
 
+- (NSString *)paramProcess:(NSString *)originParam{
+    //When we using the keyword as a param in the url, pay attention to change all spaces to "+".
+    //There are many special symbols need to be changed in url address. Given more time, I could improve all of them but here I just change some common symbols like " + ", " \" ", " \' ", " / "
+    NSString *newParam = [[[[[originParam stringByReplacingOccurrencesOfString:@" " withString:@"+"] stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"] stringByReplacingOccurrencesOfString:@"\"" withString:@"%22"] stringByReplacingOccurrencesOfString:@"\'" withString:@"%27"] stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
+    return newParam;
+}
+
 - (void)getSearchData {
     //The spinner indicated the process of data downloading, use the right bar button on NavigationItem
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -54,7 +61,7 @@ static NSString *apiUrlString = @"https://itunes.apple.com/search?term=%@";
     
     //Get the music list with url+keyword
     //Take care of the error(exeption) cases with self.message
-    [[self.apiSession dataTaskWithURL:[NSURL URLWithString:[NSString stringWithFormat:apiUrlString,self.keyword]]
+    [[self.apiSession dataTaskWithURL:[NSURL URLWithString:[NSString stringWithFormat:apiUrlString,[self paramProcess:self.keyword]]]
                     completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                         if (!error) {
                             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*) response;
